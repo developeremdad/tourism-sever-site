@@ -32,6 +32,12 @@ async function run() {
             console.log("Documnent was inserted", result);
         });
 
+        // get data from server 
+        app.get('/services', async (req, res) => {
+            const services = await collectionService.find({}).toArray();
+            res.send(services);
+        });
+
 
 
 
