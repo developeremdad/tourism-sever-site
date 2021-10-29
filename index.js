@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const port = process.env.PORT || 5000;
-require('dotenv').config()
 const { MongoClient } = require('mongodb');
+const app = express();
+require('dotenv').config()
+const port = process.env.PORT || 5000;
 
 // Middleware 
 app.use(cors());
@@ -24,6 +24,13 @@ async function run() {
         CRUD Method Start  
         --------------------*/
 
+        // create or insert services to database 
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            const result = await collectionService.insertOne(service);
+            res.json(result);
+            console.log("Documnent was inserted", result);
+        });
 
 
 
@@ -41,5 +48,5 @@ app.get('/', (req, res) => {
     res.send('Running Tourism Server Online');
 });
 app.listen(port, () => {
-    console.log('Running genius server on port', port);
+    console.log('Running Tourism server on port', port);
 });
