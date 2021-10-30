@@ -55,10 +55,9 @@ async function run() {
         --------------------------- */
         app.post('/orders', async (req, res) => {
             const order = req.body;
-            console.log(order);
-            // const result = await collectionOrder.insertOne(order);
-            // res.json(result);
-            // console.log("Documnent was inserted", result);
+            const result = await collectionOrder.insertOne(order);
+            res.json(result);
+            console.log("Documnent was inserted", result);
         });
 
     }
