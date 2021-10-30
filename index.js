@@ -53,6 +53,7 @@ async function run() {
         /* --------------------------
             place order part start 
         --------------------------- */
+        // insert order to mongodb
         app.post('/orders', async (req, res) => {
             const order = req.body;
             const result = await collectionOrder.insertOne(order);
@@ -65,6 +66,23 @@ async function run() {
             const orders = await collectionOrder.find({}).toArray();
             res.send(orders);
         });
+
+        // get spacific login user order with metching email 
+        app.get('/orders/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const myOrders = await collectionOrder.find(query).toArray();
+            res.send(myOrders);
+        });
+
+        // Cancel or delete a order 
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await collectionOrder.deleteOne(query);
+            console.log('deleted order complete ', result);
+            res.json(result);
+        })
 
     }
     finally {
