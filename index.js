@@ -69,9 +69,10 @@ async function run() {
 
         // get spacific login user order with metching email 
         app.get('/orders/:email', async (req, res) => {
-            const email = req.params.email;
-            const query = { email: email };
+            const userEmail = req.params.email;
+            const query = { email: userEmail };
             const myOrders = await collectionOrder.find(query).toArray();
+            console.log(myOrders);
             res.send(myOrders);
         });
 
