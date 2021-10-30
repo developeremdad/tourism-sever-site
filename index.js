@@ -1,7 +1,8 @@
 const express = require('express');
+const app = express();
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
-const app = express();
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config()
 const port = process.env.PORT || 5000;
 
@@ -15,10 +16,11 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
-        // connected DB
+        // connect mongodb
         await client.connect();
         const database = client.db('tourismDb');
         const collectionService = database.collection('services');
+        const collectionOrder = database.collection('orders');
 
         /*------------------
         CRUD Method Start  
@@ -32,14 +34,32 @@ async function run() {
             console.log("Documnent was inserted", result);
         });
 
-        // get data from server 
+        // get all data from server 
         app.get('/services', async (req, res) => {
             const services = await collectionService.find({}).toArray();
             res.send(services);
         });
 
+        //find a single data using id
+        app.get('/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const service = await collectionService.findOne(filter);
+            res.send(service);
+        });
 
 
+
+        /* --------------------------
+            place order part start 
+        --------------------------- */
+        app.post('/orders', async (req, res) => {
+            const order = req.body;
+            console.log(order);
+            // const result = await collectionOrder.insertOne(order);
+            // res.json(result);
+            // console.log("Documnent was inserted", result);
+        });
 
     }
     finally {
@@ -54,5 +74,5 @@ app.get('/', (req, res) => {
     res.send('Running Tourism Server Online');
 });
 app.listen(port, () => {
-    console.log('Running Tourism server on port', port);
+    console.log('Running Tourism server, port:', port);
 });
