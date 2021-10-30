@@ -60,6 +60,12 @@ async function run() {
             console.log("Documnent was inserted", result);
         });
 
+        // Get all my orders 
+        app.get('/orders', async (req, res) => {
+            const orders = await collectionOrder.find({}).toArray();
+            res.send(orders);
+        });
+
     }
     finally {
         // await client.close();
