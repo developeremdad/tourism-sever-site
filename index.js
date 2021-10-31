@@ -86,13 +86,13 @@ async function run() {
         });
 
         // get single order using id 
-        /*         app.get('/manage/:id', async (req, res) => {
-                    const id = req.params.id;
-                    const query = { _id: ObjectId(id) };
-                    const user = await collectionOrder.findOne(query);
-                    console.log('Find order with id: ', id);
-                    res.send(user);
-                }) */
+        /*  app.get('/manage/:id', async (req, res) => {
+             const id = req.params.id;
+             const query = { _id: ObjectId(id) };
+             const order = await collectionOrder.findOne(query);
+             console.log('Find order with id: ', id);
+             res.send(order);
+         }) */
 
         //update a single services
 
