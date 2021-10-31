@@ -83,6 +83,32 @@ async function run() {
             const result = await collectionOrder.deleteOne(query);
             console.log('deleted order complete ', result);
             res.json(result);
+        });
+
+        // get single order using id 
+        /*         app.get('/manage/:id', async (req, res) => {
+                    const id = req.params.id;
+                    const query = { _id: ObjectId(id) };
+                    const user = await collectionOrder.findOne(query);
+                    console.log('Find order with id: ', id);
+                    res.send(user);
+                }) */
+
+        //update a single services
+
+        app.put('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedOrder = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateStatus = {
+                $set: {
+                    status: updatedOrder.status
+                },
+            };
+            const result = await collectionOrder.updateOne(filter, updateStatus, options)
+            console.log('updated Successful: ', id);
+            res.json(result)
         })
 
     }
@@ -97,6 +123,6 @@ run().catch(console.dir);
 app.get('/', (req, res) => {
     res.send('Running Tourism Server Online');
 });
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log('Running Tourism server, port:', port);
 });
